@@ -1,0 +1,75 @@
+---
+title: "Morning notes"
+author: "Jared Petry"
+date: "2022-08-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Nested For Loops
+
+for loop within a for loop! outermost loop corresponds to the outermost variables innermost for loop is evaluated until it is done
+
+'i' will start at 1 while 'j' goes 1, 2, 3, 4, 5 then 'i' will go to 2 and the same thing will happen
+
+```{r}
+file_prefix <- c("temp", "ph", "salinity") 
+file_suffix <- c(1,2,3,4,5)
+
+for (i in seq_along(file_prefix)) {
+  for (j in seq_along(file_suffix)) {
+    print(paste0(file_prefix[i], "_", file_suffix[j]))
+  }
+}
+
+#---- so what if you switch i and j?
+for (j in seq_along(file_prefix)) {
+  for (i in seq_along(file_suffix)) {
+    print(paste0(file_prefix[j], "_", file_suffix[i]))
+  }
+}
+
+#nothing happens unless you switch the relative position of i and j
+
+for (i in seq_along(file_prefix)) {
+  for (j in seq_along(file_suffix)) {
+    print(paste0(file_prefix[j], "_", file_suffix[i]))
+  }
+}
+
+#there are some NA values becuase the loop is trying to combine the 5th element in one vector that doesn't exist 
+
+```
+
+```{r}
+odds <- c(1, 3, 5)
+evens <- c(2, 4, 6, 8)
+
+#now practice making a four loop that multiplies the first element of odds with all the individual elements in even beofre moving to the next 'odd' element and repeating the same thing
+
+
+```
+
+# Writing Functions
+
+you should consider writing a function when you have copied and pasted a block of code more than twice
+- people don't always do this 
+- a function name is important ... have a good name for readabililty 
+- good to name functions verbs and onjects nouns 
+- general setup for functions look the same for most languages 
+
+```{r}
+#----example of a function in R 
+
+exclaim_age <- function(age) {    #---this says function_name <- function(inputs_needed_for_func)
+  print(paste("I am", age, "years old!"))      #---- body of the function... what its doing 
+}
+
+exclaim_age(age = 10)  #----- now you can call the function and put in the input that you want
+  
+  
+```
+
