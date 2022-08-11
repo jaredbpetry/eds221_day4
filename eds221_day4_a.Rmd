@@ -9,6 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+```{r}
+library(tidyverse)
+```
+
 ## Nested For Loops
 
 for loop within a for loop! outermost loop corresponds to the outermost variables innermost for loop is evaluated until it is done
@@ -71,5 +76,142 @@ exclaim_age <- function(age) {    #---this says function_name <- function(inputs
 exclaim_age(age = 10)  #----- now you can call the function and put in the input that you want
   
   
+```
+
+```{r}
+quarter_splits <- c(1.0, 1.1, 1.2, 1.1, 1.4, 1.5, 1.6, 1.4)
+
+for (i in seq_along(quarter_splits)) {
+  half_time <- quarter_splits[i] +quarter_splits[i + 1]
+  print(half_time)
+}
+```
+
+## Combining functions with if else statements (conditionals)
+```{r}
+animal_age <- function(animal, age) {
+  if (animal == "dog") {
+    print(age * 7) 
+  } else if (animal == "goat") {
+    print(age*4)
+  }
+  }
+}
+```
+
+Make a function to double the user input 
+```{r}
+double_this <- function(my_value) {
+  print(my_value *2) 
+}
+
+double_this(4) #---if you don't specify the arguments, they have to be in exact order
+double_this(my_value = 4) # if you do specify arguments, you can use any order 
+
+#---- we can just pipe a value into this function too!
+this_value <- 45
+
+this_value |> double_this()
+```
+
+Write a function that asks for a users NAME and AGE and returns an exclamation like "I'm [NAME], and I am [age] years old!"
+
+```{r}
+name_age <- function(name, age) {
+  print(paste("I'm", name, "and I am", age, "years old!"))
+}
+
+name_age(name = "jared", 23)
+```
+
+Function documentation 
+title 
+description - what the function does 
+usage - 
+usually looking in the R documentation is confusing because its for expert coders 
+
+
+
+Now lets do some more stuff
+
+provide a "switch" within my function... where it can see which animal it is and then choose what to print based on that 
+```{r}
+convert_animal_age <- function(animal, human_age) {
+  if (animal == "dog") {
+    print(human_age * 7)
+  } else if (animal == "goat") {
+    print(human_age * 4.7)
+  }
+}
+
+convert_animal_age(animal = "goat", human_age = 23)
+# --- what if you don't put in either goat  or dog? 
+convert_animal_age(animal = "jackalope", human_age = 5) #---silent failure! 
+
+# ----- add another else if statement to catch the things that are not a valid input
+
+convert_animal_age2 <- function(animal, human_age) {
+  if (animal == "dog") {
+    print(human_age * 7)
+  } else if (animal == "goat") {
+    print(human_age * 4.7)
+  } else {
+    print("not a valid animal for this function")
+  }
+}
+
+#now try entering jackalope
+
+convert_animal_age2(animal = "jackalope", human_age = 23)
+```
+
+Now we are going to pull info from a data frame and this changes the parameters
+
+take data frame and pipe into filter(condition)
+OR we can...
+filter(.data= dataframe, condition)
+```{r}
+#--- use the tribble function.. so add the tidyverse library
+#--- this will be different dog types and their food choice
+
+dog_choice <- tribble(
+  ~dog_name, ~food, 
+  "khora", "everything", 
+  "teddy", "salmon", 
+  "waffle", "pancakes", 
+  "banjo", "chicken"
+)
+
+#---- do some data wrangling within our function 
+dog_menu <- function(name) {  #--- name is an object just existing in the function 
+  my_sub <- filter(.data = dog_choice, dog_name == name) 
+  print(paste("My name is", my_sub$dog_name, "and my favorite food is", my_sub$food))
+}
+
+#--- only keeping rows from df where the input name matches a dog name
+
+dog_menu("waffle")
+  
+```
+
+
+## Functions meet for loops 
+
+getting a mean of a column for a dataframe and then printing a statement about the mean 
+we are basically constructing the across() function
+```{r}
+means_over_columns <- function(df) {
+  for (i in seq_along(df)) {
+    col_mean <- mean(df[[i]], na.rm = TRUE)
+    column_name <- colnames(df[i]) 
+    print(paste("the mean value of", column_name, "is", col_mean))
+  }
+}
+
+means_over_columns(df = mtcars)
+
+means_over_columns(df = faithful)
+
+#now we don't have to copy and paste every time we use this 
 ```
 
